@@ -1,0 +1,700 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>GigShield — Income Protection for Delivery Riders</title>
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#0a0f0d;--sur:#111a15;--sur2:#162019;--bor:#1e2e22;--grn:#00e87a;--grn-m:#1a3d28;--amb:#f5a623;--red:#ff4d4d;--txt:#e8f0eb;--txt-d:#7a9985;--txt-m:#4a6054;--fh:'Syne',sans-serif;--fb:'DM Sans',sans-serif;}
+*{margin:0;padding:0;box-sizing:border-box;}
+body{background:var(--bg);color:var(--txt);font-family:var(--fb);font-size:15px;line-height:1.6;overflow-x:hidden;}
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:18px 40px;background:rgba(10,15,13,.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--bor);}
+.logo{font-family:var(--fh);font-weight:800;font-size:20px;color:var(--grn);cursor:pointer;letter-spacing:-.5px;}
+.logo span{color:var(--txt);}
+.nl{display:flex;gap:28px;}
+.nl a{color:var(--txt-d);text-decoration:none;font-size:13px;font-weight:500;cursor:pointer;transition:color .2s;}
+.nl a:hover{color:var(--grn);}
+.ncta{background:var(--grn);color:#0a0f0d;border:none;padding:9px 22px;border-radius:6px;font-family:var(--fb);font-weight:700;font-size:13px;cursor:pointer;}
+.ncta:hover{opacity:.85;}
+.screen{display:none;min-height:100vh;padding-top:72px;}
+.screen.active{display:block;}
+/* HOME */
+#s-home{position:relative;overflow:hidden;}
+.hg{position:absolute;inset:0;opacity:.04;background-image:linear-gradient(var(--grn) 1px,transparent 1px),linear-gradient(90deg,var(--grn) 1px,transparent 1px);background-size:60px 60px;pointer-events:none;}
+.hgl{position:absolute;top:8%;left:50%;transform:translateX(-50%);width:600px;height:600px;border-radius:50%;background:radial-gradient(circle,rgba(0,232,122,.08),transparent 70%);pointer-events:none;}
+.hi{position:relative;z-index:2;max-width:860px;margin:0 auto;padding:100px 40px 60px;text-align:center;}
+.hbadge{display:inline-flex;align-items:center;gap:8px;background:var(--grn-m);border:1px solid rgba(0,232,122,.2);padding:6px 14px;border-radius:100px;font-size:12px;color:var(--grn);font-weight:500;margin-bottom:32px;}
+.hbadge::before{content:'';width:6px;height:6px;border-radius:50%;background:var(--grn);animation:pulse 2s infinite;}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.3}}
+h1{font-family:var(--fh);font-size:clamp(40px,6vw,70px);font-weight:800;line-height:1.05;letter-spacing:-2px;margin-bottom:24px;}
+.acc{color:var(--grn);}
+.hsb{font-size:18px;color:var(--txt-d);font-weight:300;max-width:560px;margin:0 auto 48px;line-height:1.7;}
+.hbts{display:flex;gap:16px;justify-content:center;flex-wrap:wrap;}
+.bp{background:var(--grn);color:#0a0f0d;border:none;padding:14px 32px;border-radius:8px;font-family:var(--fb);font-weight:700;font-size:15px;cursor:pointer;transition:all .2s;}
+.bp:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(0,232,122,.25);}
+.bs{background:transparent;color:var(--txt);border:1px solid var(--bor);padding:14px 32px;border-radius:8px;font-family:var(--fb);font-weight:500;font-size:15px;cursor:pointer;transition:all .2s;}
+.bs:hover{border-color:var(--grn);color:var(--grn);}
+.hst{display:flex;justify-content:center;margin:80px auto 0;max-width:700px;border:1px solid var(--bor);border-radius:16px;overflow:hidden;background:var(--sur);}
+.hsi{flex:1;padding:28px 24px;text-align:center;border-right:1px solid var(--bor);}
+.hsi:last-child{border-right:none;}
+.hsiv{font-family:var(--fh);font-size:32px;font-weight:800;color:var(--grn);line-height:1;margin-bottom:6px;}
+.hsil{font-size:12px;color:var(--txt-m);}
+.sec{max-width:1000px;margin:0 auto;padding:80px 40px;}
+.sl{font-size:11px;letter-spacing:2px;text-transform:uppercase;color:var(--grn);font-weight:600;margin-bottom:16px;}
+.st{font-family:var(--fh);font-size:36px;font-weight:800;letter-spacing:-1px;margin-bottom:48px;line-height:1.15;}
+.sg{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+.sc{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:28px;transition:border-color .2s;}
+.sc:hover{border-color:rgba(0,232,122,.3);}
+.scn{font-family:var(--fh);font-size:48px;font-weight:800;color:var(--grn-m);line-height:1;margin-bottom:16px;}
+.sc h3{font-family:var(--fh);font-size:18px;font-weight:700;margin-bottom:10px;}
+.sc p{font-size:14px;color:var(--txt-d);line-height:1.7;}
+.tg{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+.ti{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:28px;position:relative;}
+.ti.ft{border-color:var(--grn);background:linear-gradient(135deg,var(--sur),var(--grn-m));}
+.tb{position:absolute;top:-12px;left:50%;transform:translateX(-50%);background:var(--grn);color:#0a0f0d;font-size:11px;font-weight:700;padding:4px 14px;border-radius:100px;}
+.tn{font-family:var(--fh);font-size:14px;font-weight:700;color:var(--txt-d);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
+.tp{font-family:var(--fh);font-size:40px;font-weight:800;color:var(--grn);line-height:1;margin-bottom:4px;}
+.tp span{font-size:16px;color:var(--txt-d);font-weight:400;}
+.tc{font-size:13px;color:var(--txt-d);margin-bottom:24px;}
+.tf{list-style:none;}
+.tf li{font-size:13px;color:var(--txt-d);padding:6px 0;border-bottom:1px solid var(--bor);display:flex;align-items:center;gap:10px;}
+.tf li:last-child{border-bottom:none;}
+.tf li::before{content:'→';color:var(--grn);font-size:12px;}
+/* ONBOARD */
+.ow{max-width:480px;margin:0 auto;padding:60px 24px;}
+.oh{margin-bottom:40px;}
+.oh h2{font-family:var(--fh);font-size:28px;font-weight:800;letter-spacing:-.5px;margin-bottom:8px;}
+.oh p{font-size:14px;color:var(--txt-d);}
+.pg{display:flex;gap:8px;margin-bottom:40px;}
+.pd{height:4px;border-radius:2px;flex:1;background:var(--bor);transition:background .3s;}
+.pd.on{background:var(--grn);}
+.fs{display:none;}
+.fs.active{display:block;animation:fu .3s ease;}
+@keyframes fu{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+.fg{margin-bottom:20px;}
+label{display:block;font-size:12px;font-weight:600;color:var(--txt-d);letter-spacing:.5px;text-transform:uppercase;margin-bottom:8px;}
+input,select{width:100%;background:var(--sur);border:1px solid var(--bor);border-radius:8px;padding:12px 16px;color:var(--txt);font-family:var(--fb);font-size:15px;outline:none;transition:border-color .2s;}
+input:focus,select:focus{border-color:var(--grn);}
+select option{background:var(--sur2);}
+.pr{display:flex;gap:10px;}
+.pp{background:var(--sur2);border:1px solid var(--bor);border-radius:8px;padding:12px 16px;color:var(--txt-d);font-size:15px;white-space:nowrap;}
+.pr input{flex:1;}
+.or{display:flex;gap:12px;}
+.or input{text-align:center;font-size:28px;font-weight:700;font-family:var(--fh);padding:14px 8px;}
+.ts{display:flex;flex-direction:column;gap:12px;}
+.to{background:var(--sur);border:1px solid var(--bor);border-radius:10px;padding:16px 20px;cursor:pointer;display:flex;justify-content:space-between;align-items:center;transition:all .2s;}
+.to:hover{border-color:rgba(0,232,122,.4);}
+.to.sl{border-color:var(--grn);background:var(--grn-m);}
+.ton{font-weight:600;font-size:15px;margin-bottom:3px;}
+.tod{font-size:12px;color:var(--txt-d);}
+.top{font-family:var(--fh);font-size:20px;font-weight:800;color:var(--grn);}
+.top span{font-size:12px;font-weight:400;color:var(--txt-d);}
+.bf{width:100%;background:var(--grn);color:#0a0f0d;border:none;padding:14px;border-radius:8px;font-family:var(--fb);font-weight:700;font-size:15px;cursor:pointer;margin-top:8px;transition:opacity .2s;}
+.bf:hover{opacity:.85;}
+.bf:disabled{opacity:.4;cursor:not-allowed;}
+.bo{width:100%;background:transparent;color:var(--txt);border:1px solid var(--bor);padding:14px;border-radius:8px;font-family:var(--fb);font-weight:500;font-size:15px;cursor:pointer;margin-top:8px;transition:all .2s;}
+.bo:hover{border-color:var(--grn);color:var(--grn);}
+.em{font-size:12px;color:var(--red);margin-top:8px;display:none;}
+.em.on{display:block;}
+.im{font-size:12px;color:var(--txt-d);margin-top:8px;}
+.ok{text-align:center;padding:40px 0;}
+.oki{width:80px;height:80px;border-radius:50%;background:var(--grn-m);border:2px solid var(--grn);display:flex;align-items:center;justify-content:center;font-size:36px;margin:0 auto 24px;}
+.ok h3{font-family:var(--fh);font-size:24px;font-weight:800;margin-bottom:12px;}
+.sb{background:var(--sur);border:1px solid var(--bor);border-radius:10px;padding:20px;text-align:left;margin-bottom:24px;}
+.sr{display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid var(--bor);font-size:13px;}
+.sr:last-child{border-bottom:none;}
+.sr span:first-child{color:var(--txt-d);}
+/* AI */
+.ald{text-align:center;padding:48px 0;}
+.sp{display:inline-block;font-size:32px;animation:spin 1s linear infinite;margin-bottom:16px;}
+@keyframes spin{to{transform:rotate(360deg)}}
+.ald h3{font-family:var(--fh);font-size:18px;font-weight:700;margin-bottom:8px;}
+.ald p{font-size:13px;color:var(--txt-d);}
+.albl{font-family:var(--fh);font-size:13px;font-weight:700;color:var(--grn);letter-spacing:1px;text-transform:uppercase;margin-bottom:16px;}
+.aca{background:linear-gradient(135deg,var(--grn-m),rgba(0,232,122,.03));border:1px solid rgba(0,232,122,.3);border-radius:12px;padding:24px;margin-bottom:16px;}
+.atp{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:16px;}
+.aplb{font-size:12px;color:var(--txt-d);margin-bottom:4px;}
+.apv{font-family:var(--fh);font-size:48px;font-weight:800;color:var(--grn);line-height:1;}
+.arlb{font-size:12px;color:var(--txt-d);margin-bottom:4px;text-align:right;}
+.arlv{font-family:var(--fh);font-size:20px;font-weight:700;text-align:right;}
+.rbb{height:6px;background:var(--bor);border-radius:3px;overflow:hidden;margin-bottom:8px;}
+.rb{height:100%;border-radius:3px;transition:width 1s ease;}
+.ars{font-size:12px;color:var(--txt-m);}
+.abx{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:20px;margin-bottom:12px;}
+.abt{font-size:13px;font-weight:600;margin-bottom:10px;}
+.are{font-size:13px;color:var(--txt-d);line-height:1.7;}
+.ari{display:flex;flex-direction:column;gap:8px;}
+.ark{font-size:13px;color:var(--txt-d);display:flex;align-items:center;gap:8px;}
+.ark::before{content:'▲';color:var(--amb);font-size:10px;}
+.ame{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-bottom:16px;}
+.amc{background:var(--sur);border:1px solid var(--bor);border-radius:10px;padding:14px;}
+.amcl{font-size:11px;color:var(--txt-m);margin-bottom:4px;}
+.amcv{font-family:var(--fh);font-size:18px;font-weight:700;}
+.adc{background:rgba(0,232,122,.08);border:1px solid rgba(0,232,122,.2);border-radius:8px;padding:12px;font-size:13px;color:var(--grn);margin-bottom:16px;display:none;}
+/* DASHBOARD */
+.dw{max-width:1000px;margin:0 auto;padding:40px 24px;}
+.dh{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:32px;flex-wrap:wrap;gap:16px;}
+.dh h2{font-family:var(--fh);font-size:24px;font-weight:800;}
+.dh p{font-size:13px;color:var(--txt-d);margin-top:4px;}
+.pil{display:flex;align-items:center;gap:8px;background:var(--grn-m);border:1px solid rgba(0,232,122,.3);padding:8px 16px;border-radius:100px;font-size:13px;color:var(--grn);font-weight:600;white-space:nowrap;}
+.pil::before{content:'';width:8px;height:8px;border-radius:50%;background:var(--grn);animation:pulse 2s infinite;}
+.g3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+.cd{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:24px;}
+.cl{font-size:11px;color:var(--txt-m);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.cv{font-family:var(--fh);font-size:28px;font-weight:800;line-height:1;margin-bottom:6px;}
+.cv.g{color:var(--grn);}
+.cv.a{color:var(--amb);}
+.cs{font-size:12px;color:var(--txt-d);}
+.g2{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:24px;}
+.ct{font-family:var(--fh);font-size:16px;font-weight:700;margin-bottom:20px;}
+.pbr{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.pbn{font-size:13px;font-weight:500;}
+.pbv{font-family:var(--fh);font-size:14px;font-weight:700;}
+.pbb{height:6px;background:var(--bor);border-radius:3px;overflow:hidden;}
+.pbba{height:100%;border-radius:3px;transition:width 1s ease;}
+.zi{display:flex;align-items:center;gap:16px;margin-bottom:20px;}
+.zd{width:48px;height:48px;border-radius:10px;background:var(--grn-m);border:1px solid rgba(0,232,122,.3);display:flex;align-items:center;justify-content:center;font-size:20px;}
+.zn{font-family:var(--fh);font-size:18px;font-weight:700;}
+.zs{font-size:12px;color:var(--txt-d);}
+.zg{display:grid;grid-template-columns:1fr 1fr;gap:12px;}
+.zsi{background:var(--sur2);border-radius:8px;padding:12px;}
+.zsil{font-size:11px;color:var(--txt-m);margin-bottom:4px;}
+.zsiv{font-family:var(--fh);font-size:16px;font-weight:700;color:var(--grn);}
+.txl{display:flex;flex-direction:column;gap:8px;}
+.txi{background:var(--sur);border:1px solid var(--bor);border-radius:10px;padding:16px 20px;display:flex;justify-content:space-between;align-items:center;transition:border-color .2s;}
+.txi:hover{border-color:rgba(0,232,122,.2);}
+.txil{display:flex;align-items:center;gap:14px;}
+.txic{width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;}
+.txic.po{background:var(--grn-m);}
+.txic.pr{background:rgba(245,166,35,.1);}
+.txt{font-weight:600;font-size:14px;margin-bottom:3px;}
+.txdt{font-size:12px;color:var(--txt-m);}
+.txa{font-family:var(--fh);font-size:18px;font-weight:800;}
+.txa.cr{color:var(--grn);}
+.txa.db{color:var(--txt-d);}
+/* MONITOR */
+.mw{max-width:1000px;margin:0 auto;padding:40px 24px;}
+.mh{margin-bottom:24px;}
+.mh h2{font-family:var(--fh);font-size:24px;font-weight:800;margin-bottom:6px;}
+.mh p{font-size:13px;color:var(--txt-d);}
+.lr{display:flex;align-items:center;gap:12px;margin-bottom:24px;flex-wrap:wrap;}
+.cw{display:flex;align-items:center;gap:10px;}
+.cw label{text-transform:none;letter-spacing:0;font-size:13px;margin:0;}
+.cw select{width:auto;padding:8px 14px;font-size:13px;}
+.rb{background:var(--sur);border:1px solid var(--bor);color:var(--txt-d);padding:8px 16px;border-radius:8px;font-size:13px;cursor:pointer;font-family:var(--fb);transition:all .2s;}
+.rb:hover{border-color:var(--grn);color:var(--grn);}
+.lu{font-size:12px;color:var(--txt-m);margin-left:auto;}
+.mg{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px;}
+.sn{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:24px;transition:border-color .3s;}
+.sn.tr{border-color:var(--red);}
+.sn.wa{border-color:var(--amb);}
+.st2{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:20px;}
+.snn{font-size:12px;color:var(--txt-d);letter-spacing:1px;text-transform:uppercase;font-weight:600;}
+.sbg{font-size:11px;font-weight:700;padding:4px 10px;border-radius:100px;}
+.bsf{background:var(--grn-m);color:var(--grn);}
+.bwn{background:rgba(245,166,35,.15);color:var(--amb);}
+.btr{background:rgba(255,77,77,.15);color:var(--red);}
+.bld{background:var(--bor);color:var(--txt-m);}
+.sv{font-family:var(--fh);font-size:42px;font-weight:800;line-height:1;margin-bottom:6px;}
+.su{font-size:14px;color:var(--txt-d);font-weight:400;}
+.sh{font-size:12px;color:var(--txt-m);margin-bottom:16px;}
+.sbb{height:4px;background:var(--bor);border-radius:2px;overflow:hidden;}
+.sb2{height:100%;border-radius:2px;transition:width .8s ease,background .3s;}
+.tb2{background:var(--sur2);border:1px solid var(--bor);color:var(--txt);padding:10px 20px;border-radius:8px;font-family:var(--fb);font-weight:600;font-size:13px;cursor:pointer;width:100%;margin-top:16px;transition:all .2s;}
+.tb2:hover{border-color:var(--red);color:var(--red);}
+.tb2.on{background:rgba(255,77,77,.1);border-color:var(--red);color:var(--red);}
+.tb2:disabled{opacity:.4;cursor:not-allowed;}
+.rsb{background:var(--grn-m);border:1px solid rgba(0,232,122,.3);color:var(--grn);padding:10px 20px;border-radius:8px;font-family:var(--fb);font-weight:600;font-size:13px;cursor:pointer;width:100%;margin-top:8px;}
+.rsb:hover{opacity:.8;}
+.pa{background:linear-gradient(135deg,rgba(0,232,122,.08),rgba(0,232,122,.03));border:1px solid rgba(0,232,122,.3);border-radius:12px;padding:24px;margin-top:16px;display:none;}
+.pa.on{display:block;animation:sli .4s ease;}
+@keyframes sli{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
+.pat{font-family:var(--fh);font-size:18px;font-weight:800;color:var(--grn);margin-bottom:6px;}
+.pcw{display:flex;align-items:baseline;gap:6px;margin:16px 0;}
+.pcl{font-size:13px;color:var(--txt-d);}
+.pc{font-family:var(--fh);font-size:40px;font-weight:800;color:var(--grn);}
+.psu{font-size:13px;color:var(--txt-d);margin-bottom:16px;}
+.pl{display:flex;flex-direction:column;gap:8px;}
+.pw{display:flex;justify-content:space-between;background:var(--sur);border-radius:8px;padding:10px 14px;font-size:13px;animation:fu .3s ease;}
+.prd{color:var(--txt-d);}
+.pam{font-family:var(--fh);font-weight:700;color:var(--grn);}
+.el{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:24px;margin-top:16px;}
+.elt{font-family:var(--fh);font-size:16px;font-weight:700;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
+.lb{font-size:11px;font-weight:700;color:var(--grn);background:var(--grn-m);padding:4px 10px;border-radius:100px;display:flex;align-items:center;gap:6px;}
+.lb::before{content:'';width:5px;height:5px;border-radius:50%;background:var(--grn);animation:pulse 1.5s infinite;}
+.ev{display:flex;gap:14px;padding:12px 0;border-bottom:1px solid var(--bor);align-items:flex-start;}
+.ev:last-child{border-bottom:none;}
+.ed{width:8px;height:8px;border-radius:50%;margin-top:5px;flex-shrink:0;}
+.ed.g{background:var(--grn);}
+.ed.a{background:var(--amb);}
+.ed.r{background:var(--red);}
+.et{font-size:13px;color:var(--txt-d);line-height:1.5;flex:1;}
+.et strong{color:var(--txt);font-weight:600;}
+.etm{font-size:11px;color:var(--txt-m);flex-shrink:0;padding-top:3px;}
+/* WALLET */
+.ww{max-width:700px;margin:0 auto;padding:40px 24px;}
+.wc{background:linear-gradient(135deg,#0d2218,#0a1a10);border:1px solid rgba(0,232,122,.2);border-radius:16px;padding:32px;margin-bottom:24px;position:relative;overflow:hidden;}
+.wc::after{content:'';position:absolute;top:-40px;right:-40px;width:200px;height:200px;border-radius:50%;background:radial-gradient(circle,rgba(0,232,122,.08),transparent 70%);}
+.wl{font-size:12px;color:var(--txt-d);letter-spacing:1px;text-transform:uppercase;margin-bottom:12px;}
+.wb{font-family:var(--fh);font-size:52px;font-weight:800;color:var(--grn);line-height:1;margin-bottom:8px;}
+.wsu{font-size:13px;color:var(--txt-d);margin-bottom:24px;}
+.wm{display:flex;gap:32px;}
+.wml{font-size:11px;color:var(--txt-m);margin-bottom:4px;}
+.wmv{font-family:var(--fh);font-size:16px;font-weight:700;}
+.wsh{font-family:var(--fh);font-size:18px;font-weight:700;margin-bottom:16px;}
+@media(max-width:640px){nav{padding:14px 20px;}.nl{display:none;}h1{font-size:36px;letter-spacing:-1px;}.hst{flex-direction:column;}.hsi{border-right:none;border-bottom:1px solid var(--bor);}.hsi:last-child{border-bottom:none;}.sg,.tg,.g3,.g2,.mg,.ame,.zg{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<nav>
+  <div class="logo" onclick="go('home')">Gig<span>Shield</span></div>
+  <div class="nl">
+    <a onclick="go('home')">Home</a>
+    <a onclick="go('dashboard')">Dashboard</a>
+    <a onclick="go('monitor')">Monitor</a>
+    <a onclick="go('wallet')">Wallet</a>
+  </div>
+  <button class="ncta" onclick="go('onboard')">Get Covered</button>
+</nav>
+
+<!-- HOME -->
+<div id="s-home" class="screen active">
+  <div class="hg"></div><div class="hgl"></div>
+  <div class="hi">
+    <div class="hbadge">Guidewire DEVTrails 2026 — Live Demo</div>
+    <h1>When the rain stops<br>your work, <span class="acc">we pay.</span></h1>
+    <p class="hsb">Parametric income protection for India's delivery riders. Pays automatically when disruptions hit. No claims. No waiting. Money in your UPI.</p>
+    <div class="hbts">
+      <button class="bp" onclick="go('onboard')">Get Covered — Rs. 250/week</button>
+      <button class="bs" onclick="go('monitor')">See Live Monitor</button>
+    </div>
+    <div class="hst">
+      <div class="hsi"><div class="hsiv">5M+</div><div class="hsil">Riders unprotected today</div></div>
+      <div class="hsi"><div class="hsiv">28%</div><div class="hsil">Monthly income lost to disruptions</div></div>
+      <div class="hsi"><div class="hsiv">&lt;4 min</div><div class="hsil">From trigger to UPI payout</div></div>
+    </div>
+  </div>
+  <div class="sec">
+    <div class="sl">How It Works</div>
+    <div class="st">Three steps.<br>Zero paperwork.</div>
+    <div class="sg">
+      <div class="sc"><div class="scn">01</div><h3>Pay weekly</h3><p>Rs. 150–350/week auto-deducted from your platform settlement. Less than what you lose in one disrupted afternoon.</p></div>
+      <div class="sc"><div class="scn">02</div><h3>AI watches your zone</h3><p>Our disruption monitor polls live weather, AQI, and civic data every 30 minutes. The moment a threshold is crossed, the engine fires.</p></div>
+      <div class="sc"><div class="scn">03</div><h3>Money arrives</h3><p>Lost income calculated and transferred to your UPI automatically. No forms. No calls. No waiting.</p></div>
+    </div>
+  </div>
+  <div class="sec" style="padding-top:0">
+    <div class="sl">Coverage Tiers</div>
+    <div class="st">Pick your plan.</div>
+    <div class="tg">
+      <div class="ti"><div class="tn">Basic</div><div class="tp">&#8377;150 <span>/week</span></div><div class="tc">Coverage up to Rs. 1,500/week</div><ul class="tf"><li>Rain &amp; flood triggers</li><li>Instant UPI payout</li><li>Zone disruption alerts</li><li>Wallet &amp; history</li></ul></div>
+      <div class="ti ft"><div class="tb">MOST POPULAR</div><div class="tn">Standard</div><div class="tp">&#8377;250 <span>/week</span></div><div class="tc">Coverage up to Rs. 2,500/week</div><ul class="tf"><li>All Basic triggers</li><li>Pollution &amp; heat triggers</li><li>Curfew &amp; strike coverage</li><li>Priority payout queue</li></ul></div>
+      <div class="ti"><div class="tn">Pro</div><div class="tp">&#8377;350 <span>/week</span></div><div class="tc">Coverage up to Rs. 4,000/week</div><ul class="tf"><li>All Standard triggers</li><li>Incident flagging</li><li>Catastrophe reserve priority</li><li>Weekly earnings report</li></ul></div>
+    </div>
+  </div>
+</div>
+
+<!-- ONBOARD -->
+<div id="s-onboard" class="screen">
+  <div class="ow">
+    <div class="oh"><h2>Get covered in 3 minutes.</h2><p>OTP is shown on screen for this demo.</p></div>
+    <div class="pg"><div class="pd on" id="pd1"></div><div class="pd" id="pd2"></div><div class="pd" id="pd3"></div><div class="pd" id="pd4"></div><div class="pd" id="pd5"></div></div>
+    <!-- Step 1 -->
+    <div class="fs active" id="fs1">
+      <div class="fg"><label>Full Name</label><input type="text" id="r-name" placeholder="Rajan Kumar"></div>
+      <div class="fg">
+        <label>Mobile Number</label>
+        <div class="pr"><div class="pp">+91</div><input type="tel" id="r-phone" placeholder="98765 43210" maxlength="10"></div>
+        <div class="em" id="e-ph">Enter a valid 10-digit Indian mobile number.</div>
+      </div>
+      <div class="fg"><label>Delivery Platform</label><select id="r-plat"><option value="">Select platform</option><option>Zomato</option><option>Swiggy</option><option>Blinkit</option><option>Zepto</option><option>Amazon Flex</option></select></div>
+      <div class="fg"><label>Your City</label><select id="r-city"><option value="">Select city</option><option>Bengaluru</option><option>Chennai</option><option>Mumbai</option><option>Hyderabad</option><option>Delhi</option><option>Pune</option></select></div>
+      <button class="bf" id="btn-otp" onclick="sendOTP()">Send OTP</button>
+      <div class="em" id="e-otp"></div>
+    </div>
+    <!-- Step 2 -->
+    <div class="fs" id="fs2">
+      <p style="font-size:14px;color:var(--txt-d);margin-bottom:8px">Enter the OTP from the popup for <strong id="otp-ph">your number</strong>.</p>
+      <p class="im" style="margin-bottom:28px">OTP valid for 5 minutes.</p>
+      <div class="fg">
+        <label>OTP</label>
+        <div class="or">
+          <input type="number" id="o1" oninput="oi(this,'o2')" onkeydown="ob(event,this,'')">
+          <input type="number" id="o2" oninput="oi(this,'o3')" onkeydown="ob(event,this,'o1')">
+          <input type="number" id="o3" oninput="oi(this,'o4')" onkeydown="ob(event,this,'o2')">
+          <input type="number" id="o4" oninput="oi(this,'')"  onkeydown="ob(event,this,'o3')">
+        </div>
+        <div class="em" id="e-vf"></div>
+      </div>
+      <button class="bf" id="btn-vf" onclick="verifyOTP()">Verify OTP</button>
+      <button class="bo" onclick="step(1)">Back</button>
+      <p class="im" style="cursor:pointer;color:var(--grn);margin-top:12px" onclick="sendOTP(true)">Resend OTP</p>
+    </div>
+    <!-- Step 3 -->
+    <div class="fs" id="fs3">
+      <p style="font-size:14px;color:var(--txt-d);margin-bottom:24px">Choose your tier. Our AI calculates your exact personalised premium.</p>
+      <div class="ts">
+        <div class="to" onclick="selT(this,'Basic','150','1,500')"><div><div class="ton">Basic</div><div class="tod">Part-time — under 6 hrs/day</div></div><div class="top">&#8377;150 <span>/wk</span></div></div>
+        <div class="to sl" onclick="selT(this,'Standard','250','2,500')"><div><div class="ton">Standard — Recommended</div><div class="tod">Full-time — 6 to 10 hrs/day</div></div><div class="top">&#8377;250 <span>/wk</span></div></div>
+        <div class="to" onclick="selT(this,'Pro','350','4,000')"><div><div class="ton">Pro</div><div class="tod">High-earning — 10+ hrs/day</div></div><div class="top">&#8377;350 <span>/wk</span></div></div>
+      </div>
+      <div class="fg" style="margin-top:24px"><label>Average Daily Earnings (Rs.)</label><input type="number" id="r-earn" placeholder="700" min="100" max="9999"></div>
+      <button class="bf" onclick="runAI()">Calculate My Premium with AI</button>
+      <button class="bo" onclick="step(2)">Back</button>
+    </div>
+    <!-- Step 4: AI -->
+    <div class="fs" id="fs4">
+      <div id="al" class="ald"><div class="sp">&#9881;</div><h3>AI Engine Analysing...</h3><p>Calculating your premium using city risk, platform exposure, and your earnings profile.</p></div>
+      <div id="ar" style="display:none">
+        <div class="albl">AI Risk Assessment</div>
+        <div class="aca">
+          <div class="atp">
+            <div><div class="aplb">Your Weekly Premium</div><div class="apv" id="ai-p">&#8377;250</div></div>
+            <div><div class="arlb">Risk Level</div><div class="arlv" id="ai-rl">Moderate</div></div>
+          </div>
+          <div class="rbb"><div class="rb" id="ai-rb" style="width:50%;background:var(--amb)"></div></div>
+          <div class="ars" id="ai-rs">Risk score: 5/10</div>
+        </div>
+        <div class="abx"><div class="abt">AI Reasoning</div><div class="are" id="ai-re">—</div></div>
+        <div class="abx"><div class="abt">Primary Risk Factors</div><div class="ari" id="ai-ri"></div></div>
+        <div class="ame">
+          <div class="amc"><div class="amcl">Weekly Coverage Cap</div><div class="amcv" style="color:var(--grn)" id="ai-cp">&#8377;2,500</div></div>
+          <div class="amc"><div class="amcl">Est. Loss Ratio</div><div class="amcv" style="color:var(--amb)" id="ai-lr">65%</div></div>
+        </div>
+        <div class="adc" id="ai-dc"></div>
+        <button class="bf" onclick="step(5)">Confirm This Plan</button>
+        <button class="bo" onclick="step(3)">Back — Change Details</button>
+      </div>
+      <div id="ae" style="display:none;text-align:center;padding:24px">
+        <div style="font-size:13px;color:var(--red);margin-bottom:16px" id="ai-em">AI calculation failed.</div>
+        <button class="bo" onclick="step(3)">Back — Try Again</button>
+      </div>
+    </div>
+    <!-- Step 5 -->
+    <div class="fs" id="fs5">
+      <div class="ok">
+        <div class="oki">&#10003;</div>
+        <h3>You are covered.</h3>
+        <p style="font-size:14px;color:var(--txt-d);margin-bottom:24px">Coverage active from this Monday. We monitor your zone 24/7 and pay automatically when disruptions hit.</p>
+        <div class="sb">
+          <div class="sr"><span>Name</span><span id="s-nm" style="font-weight:600">—</span></div>
+          <div class="sr"><span>Plan</span><span id="s-ti" style="font-weight:600">Standard</span></div>
+          <div class="sr"><span>Weekly Premium</span><span id="s-pr" style="font-weight:600;color:var(--amb)">Rs. 250</span></div>
+          <div class="sr"><span>Weekly Coverage Cap</span><span id="s-cp" style="font-weight:600;color:var(--grn)">Rs. 2,500</span></div>
+          <div class="sr"><span>City</span><span id="s-ct" style="font-weight:600">—</span></div>
+        </div>
+        <button class="bf" onclick="go('dashboard')">View My Dashboard</button>
+        <button class="bo" onclick="go('monitor')">See Live Disruption Monitor</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- DASHBOARD -->
+<div id="s-dashboard" class="screen">
+  <div class="dw">
+    <div class="dh">
+      <div><h2>Good morning, <span id="d-nm">Rajan</span>.</h2><p>Bengaluru — Indiranagar Zone · Standard Plan</p></div>
+      <div class="pil">Coverage Active</div>
+    </div>
+    <div class="g3">
+      <div class="cd"><div class="cl">Total Protected This Month</div><div class="cv g">&#8377;4,820</div><div class="cs">3 disruption events paid out</div></div>
+      <div class="cd"><div class="cl">Weekly Coverage Remaining</div><div class="cv">&#8377;1,680</div><div class="cs">of &#8377;2,500 cap this week</div></div>
+      <div class="cd"><div class="cl">Next Premium Deduction</div><div class="cv a">Mon</div><div class="cs">Rs. 250 — UPI autopay</div></div>
+    </div>
+    <div class="g2">
+      <div class="cd">
+        <div class="ct">Pool Health</div>
+        <div style="margin-bottom:18px"><div class="pbr"><span class="pbn">Accumulation Pool (70%)</span><span class="pbv" style="color:var(--grn)">82%</span></div><div class="pbb"><div class="pbba" style="width:82%;background:var(--grn)"></div></div></div>
+        <div><div class="pbr"><span class="pbn">Distribution Pool (30%)</span><span class="pbv" style="color:var(--amb)">41%</span></div><div class="pbb"><div class="pbba" style="width:41%;background:var(--amb)"></div></div></div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--bor)"><div style="font-size:12px;color:var(--txt-m)">Quarterly cap utilization</div><div style="font-size:13px;color:var(--txt-d);margin-top:6px">Bengaluru: 24% of Rs. 6.5 crore cap used</div></div>
+      </div>
+      <div class="cd">
+        <div class="ct">Your Zone</div>
+        <div class="zi"><div class="zd">&#128205;</div><div><div class="zn">Indiranagar</div><div class="zs">Bengaluru East · Zone BLR-04</div></div></div>
+        <div class="zg">
+          <div class="zsi"><div class="zsil">Risk Level</div><div class="zsiv" style="color:var(--amb)">Moderate</div></div>
+          <div class="zsi"><div class="zsil">Enrolled Riders</div><div class="zsiv">1,247</div></div>
+          <div class="zsi"><div class="zsil">Events This Month</div><div class="zsiv">3</div></div>
+          <div class="zsi"><div class="zsil">Avg Payout</div><div class="zsiv">&#8377;1,607</div></div>
+        </div>
+      </div>
+    </div>
+    <div class="cd">
+      <div class="ct">Recent Payouts</div>
+      <div class="txl">
+        <div class="txi"><div class="txil"><div class="txic po">&#127783;</div><div><div class="txt">Heavy Rain — Indiranagar</div><div class="txdt">Mar 14, 2026 · 14:32 · Auto-triggered</div></div></div><div class="txa cr">+&#8377;820</div></div>
+        <div class="txi"><div class="txil"><div class="txic po">&#127754;</div><div><div class="txt">Flood Alert — Zone BLR-04</div><div class="txdt">Mar 07, 2026 · 09:15 · Auto-triggered</div></div></div><div class="txa cr">+&#8377;2,500</div></div>
+        <div class="txi"><div class="txil"><div class="txic po">&#9729;&#65039;</div><div><div class="txt">High Pollution — AQI 318</div><div class="txdt">Feb 28, 2026 · 11:48 · Auto-triggered</div></div></div><div class="txa cr">+&#8377;1,500</div></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- MONITOR -->
+<div id="s-monitor" class="screen">
+  <div class="mw">
+    <div class="mh"><h2>Live Disruption Monitor</h2><p>Live weather via WeatherAPI.com · Live AQI via OpenAQ · Simulate any disruption to see the payout engine fire in real time.</p></div>
+    <div class="lr">
+      <div class="cw"><label>City:</label><select id="mon-city" onchange="fetchLive()"><option>Bengaluru</option><option>Chennai</option><option>Mumbai</option><option>Hyderabad</option><option>Delhi</option><option>Pune</option></select></div>
+      <button class="rb" onclick="fetchLive()">Refresh Live Data</button>
+      <div class="lu" id="lu">Fetching live data...</div>
+    </div>
+    <div class="mg">
+      <div class="sn" id="c-rain"><div class="st2"><div class="snn">Rainfall</div><div class="sbg bld" id="b-rain">Loading...</div></div><div class="sv" id="v-rain">— <span class="su">mm/hr</span></div><div class="sh">Trigger: &#8805; 35mm in 3 hours</div><div class="sbb"><div class="sb2" id="sb-rain" style="width:0%;background:var(--grn)"></div></div><button class="tb2" id="btn-rain" onclick="trig('rain')">Simulate Heavy Rain</button></div>
+      <div class="sn" id="c-aqi"><div class="st2"><div class="snn">Air Quality Index</div><div class="sbg bld" id="b-aqi">Loading...</div></div><div class="sv" id="v-aqi">— <span class="su">AQI</span></div><div class="sh">Trigger: AQI &#8805; 300 for 4+ hours</div><div class="sbb"><div class="sb2" id="sb-aqi" style="width:0%;background:var(--grn)"></div></div><button class="tb2" id="btn-aqi" onclick="trig('aqi')">Simulate Hazardous AQI</button></div>
+      <div class="sn" id="c-heat"><div class="st2"><div class="snn">Temperature</div><div class="sbg bld" id="b-heat">Loading...</div></div><div class="sv" id="v-heat">— <span class="su">&#176;C</span></div><div class="sh">Trigger: &#8805; 42&#176;C for 4+ hours</div><div class="sbb"><div class="sb2" id="sb-heat" style="width:0%;background:var(--grn)"></div></div><button class="tb2" id="btn-heat" onclick="trig('heat')">Simulate Extreme Heat</button></div>
+      <div class="sn" id="c-curfew"><div class="st2"><div class="snn">Civic Alert</div><div class="sbg bsf" id="b-curfew">Safe</div></div><div class="sv" id="v-curfew">None <span class="su" style="font-size:16px">active</span></div><div class="sh">Trigger: confirmed curfew or zone strike</div><div class="sbb"><div class="sb2" id="sb-curfew" style="width:0%;background:var(--red)"></div></div><button class="tb2" id="btn-curfew" onclick="trig('curfew')">Simulate Zone Curfew</button></div>
+    </div>
+    <button class="rsb" onclick="resetAll()">Reset All Sensors to Live Data</button>
+    <div class="pa" id="pay-alert">
+      <div class="pat">Payout Triggered &#8212; Processing</div>
+      <div class="pcw"><div class="pcl">Total transferring to riders:</div><div class="pc" id="pay-ctr">&#8377;0</div></div>
+      <div class="psu" id="pay-sub">AI engine identified affected riders. Initiating UPI transfers.</div>
+      <div class="pl" id="pay-list"></div>
+    </div>
+    <div class="el">
+      <div class="elt">Event Log <div class="lb">Live</div></div>
+      <div id="evlog"><div class="ev"><div class="ed g"></div><div class="et"><strong>System online.</strong> Fetching live weather and AQI. All sensors initialising.</div><div class="etm">Now</div></div></div>
+    </div>
+  </div>
+</div>
+
+<!-- WALLET -->
+<div id="s-wallet" class="screen">
+  <div class="ww">
+    <div class="wc">
+      <div class="wl">Total Earned via GigShield</div>
+      <div class="wb">&#8377;9,340</div>
+      <div class="wsu">Across 6 disruption payouts since joining &#183; Feb 2026</div>
+      <div class="wm">
+        <div><div class="wml">This Month</div><div class="wmv" style="color:var(--grn)">&#8377;4,820</div></div>
+        <div><div class="wml">Premiums Paid</div><div class="wmv" style="color:var(--amb)">&#8377;1,500</div></div>
+        <div><div class="wml">Net Benefit</div><div class="wmv" style="color:var(--grn)">&#8377;7,840</div></div>
+      </div>
+    </div>
+    <div class="wsh">Transaction History</div>
+    <div class="txl">
+      <div class="txi"><div class="txil"><div class="txic po">&#127783;</div><div><div class="txt">Payout &#8212; Heavy Rain, Indiranagar</div><div class="txdt">Mar 14, 2026 · UPI · Ref #GS-2603141</div></div></div><div class="txa cr">+&#8377;820</div></div>
+      <div class="txi"><div class="txil"><div class="txic pr">&#128179;</div><div><div class="txt">Weekly Premium &#8212; Standard Plan</div><div class="txdt">Mar 10, 2026 · Autopay · Ref #GS-2603102</div></div></div><div class="txa db">&#8722;&#8377;250</div></div>
+      <div class="txi"><div class="txil"><div class="txic po">&#127754;</div><div><div class="txt">Payout &#8212; Flood Alert, Zone BLR-04</div><div class="txdt">Mar 07, 2026 · UPI · Ref #GS-2603071</div></div></div><div class="txa cr">+&#8377;2,500</div></div>
+      <div class="txi"><div class="txil"><div class="txic pr">&#128179;</div><div><div class="txt">Weekly Premium &#8212; Standard Plan</div><div class="txdt">Mar 03, 2026 · Autopay · Ref #GS-2603031</div></div></div><div class="txa db">&#8722;&#8377;250</div></div>
+      <div class="txi"><div class="txil"><div class="txic po">&#9729;&#65039;</div><div><div class="txt">Payout &#8212; High Pollution AQI 318</div><div class="txdt">Feb 28, 2026 · UPI · Ref #GS-2602281</div></div></div><div class="txa cr">+&#8377;1,500</div></div>
+      <div class="txi"><div class="txil"><div class="txic pr">&#128179;</div><div><div class="txt">Weekly Premium &#8212; Standard Plan</div><div class="txdt">Feb 24, 2026 · Autopay · Ref #GS-2602241</div></div></div><div class="txa db">&#8722;&#8377;250</div></div>
+      <div class="txi"><div class="txil"><div class="txic po">&#9889;</div><div><div class="txt">Payout &#8212; Zone Curfew, BLR-04</div><div class="txdt">Feb 19, 2026 · UPI · Ref #GS-2602191</div></div></div><div class="txa cr">+&#8377;2,500</div></div>
+      <div class="txi"><div class="txil"><div class="txic pr">&#128179;</div><div><div class="txt">Weekly Premium &#8212; Standard Plan</div><div class="txdt">Feb 17, 2026 · Autopay · Ref #GS-2602171</div></div></div><div class="txa db">&#8722;&#8377;250</div></div>
+      <div class="txi"><div class="txil"><div class="txic po">&#128293;</div><div><div class="txt">Payout &#8212; Extreme Heat 43&#176;C</div><div class="txdt">Feb 12, 2026 · UPI · Ref #GS-2602121</div></div></div><div class="txa cr">+&#8377;1,000</div></div>
+      <div class="txi"><div class="txil"><div class="txic pr">&#128179;</div><div><div class="txt">Weekly Premium &#8212; Standard Plan</div><div class="txdt">Feb 10, 2026 · Autopay · Ref #GS-2602101</div></div></div><div class="txa db">&#8722;&#8377;250</div></div>
+    </div>
+  </div>
+</div>
+
+<script>
+var TD={name:'Standard',premium:'250',coverage:'2,500'},VP='',LW=null,LA=null,TR={};
+
+function go(s){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById('s-'+s).classList.add('active');window.scrollTo(0,0);if(s==='monitor')fetchLive();}
+
+function step(n){
+  if(n===5){
+    document.getElementById('s-nm').textContent=document.getElementById('r-name').value||'Rider';
+    document.getElementById('s-ti').textContent=TD.name;
+    document.getElementById('s-pr').textContent='Rs. '+TD.premium;
+    document.getElementById('s-cp').textContent='Rs. '+TD.coverage;
+    document.getElementById('s-ct').textContent=document.getElementById('r-city').value||'—';
+    document.getElementById('d-nm').textContent=(document.getElementById('r-name').value||'Rider').split(' ')[0];
+  }
+  document.querySelectorAll('.fs').forEach(x=>x.classList.remove('active'));
+  document.getElementById('fs'+n).classList.add('active');
+  document.querySelectorAll('.pd').forEach((d,i)=>d.classList.toggle('on',i<n));
+}
+
+function selT(el,name,premium,coverage){document.querySelectorAll('.to').forEach(t=>t.classList.remove('sl'));el.classList.add('sl');TD={name,premium,coverage};}
+
+async function sendOTP(resend){
+  var ph=document.getElementById('r-phone').value.replace(/\D/g,'');
+  document.getElementById('e-ph').classList.remove('on');
+  document.getElementById('e-otp').classList.remove('on');
+  if(!/^[6-9]\d{9}$/.test(ph)){document.getElementById('e-ph').classList.add('on');return;}
+  var btn=document.getElementById('btn-otp');btn.disabled=true;btn.textContent='Generating...';
+  try{
+    var r=await fetch('/api/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:ph})});
+    var d=await r.json();
+    if(d.success){
+      VP=ph;document.getElementById('otp-ph').textContent='+91 '+ph;
+      alert('GigShield — Demo OTP\n\nYour verification code is:\n\n'+d.otp+'\n\nEnter this on the next screen.');
+      if(!resend)step(2);
+    }else{document.getElementById('e-otp').textContent=d.error||'Failed. Try again.';document.getElementById('e-otp').classList.add('on');}
+  }catch(e){document.getElementById('e-otp').textContent='Network error. Try again.';document.getElementById('e-otp').classList.add('on');}
+  finally{btn.disabled=false;btn.textContent='Send OTP';}
+}
+
+function oi(el,nx){el.value=el.value.slice(-1);if(el.value&&nx)document.getElementById(nx).focus();}
+function ob(e,el,pv){if(e.key==='Backspace'&&!el.value&&pv)document.getElementById(pv).focus();}
+
+async function verifyOTP(){
+  var otp=['o1','o2','o3','o4'].map(id=>document.getElementById(id).value).join('');
+  var err=document.getElementById('e-vf');err.classList.remove('on');
+  if(otp.length!==4){err.textContent='Enter all 4 digits.';err.classList.add('on');return;}
+  var btn=document.getElementById('btn-vf');btn.disabled=true;btn.textContent='Verifying...';
+  try{
+    var r=await fetch('/api/verify-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:VP,otp})});
+    var d=await r.json();
+    if(d.success){step(3);}
+    else{err.textContent=d.error||'Incorrect OTP.';err.classList.add('on');['o1','o2','o3','o4'].forEach(id=>document.getElementById(id).value='');document.getElementById('o1').focus();}
+  }catch(e){err.textContent='Network error.';err.classList.add('on');}
+  finally{btn.disabled=false;btn.textContent='Verify OTP';}
+}
+
+async function runAI(){
+  var earn=document.getElementById('r-earn').value;
+  if(!earn||Number(earn)<100){alert('Enter your average daily earnings (min Rs. 100).');return;}
+  document.querySelectorAll('.fs').forEach(x=>x.classList.remove('active'));
+  document.getElementById('fs4').classList.add('active');
+  document.querySelectorAll('.pd').forEach((d,i)=>d.classList.toggle('on',i<4));
+  document.getElementById('al').style.display='block';
+  document.getElementById('ar').style.display='none';
+  document.getElementById('ae').style.display='none';
+  var city=document.getElementById('r-city').value||'Bengaluru';
+  var plat=document.getElementById('r-plat').value||'Zomato';
+  var hrs={Basic:5,Standard:8,Pro:11}[TD.name]||8;
+  try{
+    var r=await fetch('/api/ai-premium',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({city,platform:plat,hours_per_day:hrs,avg_daily_earnings:earn,tier:TD.name})});
+    var d=await r.json();
+    if(!d.success)throw new Error(d.error||'AI error');
+    TD.premium=String(d.weekly_premium);
+    TD.coverage=Number(d.coverage_cap).toLocaleString('en-IN');
+    document.getElementById('ai-p').textContent='₹'+d.weekly_premium;
+    document.getElementById('ai-rl').textContent=d.risk_level;
+    document.getElementById('ai-rs').textContent='Risk score: '+d.risk_score+'/10';
+    document.getElementById('ai-re').textContent=d.reasoning;
+    document.getElementById('ai-cp').textContent='₹'+Number(d.coverage_cap).toLocaleString('en-IN');
+    document.getElementById('ai-lr').textContent=d.loss_ratio_estimate;
+    var bar=document.getElementById('ai-rb');
+    bar.style.width=(d.risk_score/10*100)+'%';
+    bar.style.background=d.risk_score<=3?'var(--grn)':d.risk_score<=6?'var(--amb)':'var(--red)';
+    document.getElementById('ai-ri').innerHTML=(d.primary_risks||[]).map(x=>'<div class="ark">'+x+'</div>').join('');
+    var dc=document.getElementById('ai-dc');
+    if(d.discount_applied&&d.discount_applied!=='null'){dc.textContent='✓ '+d.discount_applied;dc.style.display='block';}
+    else dc.style.display='none';
+    document.getElementById('al').style.display='none';
+    document.getElementById('ar').style.display='block';
+  }catch(e){
+    document.getElementById('al').style.display='none';
+    document.getElementById('ai-em').textContent=e.message||'AI failed.';
+    document.getElementById('ae').style.display='block';
+  }
+}
+
+async function fetchLive(){
+  var city=document.getElementById('mon-city').value;
+  document.getElementById('lu').textContent='Fetching live data...';
+  ['rain','aqi','heat'].forEach(s=>{if(!TR[s]){document.getElementById('b-'+s).className='sbg bld';document.getElementById('b-'+s).textContent='Loading...';}});
+  try{
+    var [wr,ar]=await Promise.all([fetch('/api/weather?city='+encodeURIComponent(city)),fetch('/api/aqi?city='+encodeURIComponent(city))]);
+    LW=await wr.json();LA=await ar.json();
+    if(LW.error)throw new Error('Weather: '+LW.error);
+    renderLive();
+    document.getElementById('lu').textContent='Updated: '+new Date().toLocaleTimeString('en-IN');
+    log('g','Live data fetched for '+city+'. Temp: '+LW.temp+'°C · Rain: '+LW.rain_mm+'mm/hr · Wind: '+LW.wind_kph+'kph.');
+  }catch(e){
+    document.getElementById('lu').textContent='Error: '+e.message;
+    log('a','Live data failed: '+e.message+'. Check WEATHERAPI_KEY in Vercel env vars.');
+  }
+}
+
+function renderLive(){
+  if(!LW)return;
+  if(!TR['rain']){
+    var rain=LW.rain_mm||0;
+    document.getElementById('v-rain').innerHTML=rain+' <span class="su">mm/hr</span>';
+    document.getElementById('sb-rain').style.width=Math.min(100,(rain/35)*100)+'%';
+    document.getElementById('sb-rain').style.background=rain>=25?'var(--amb)':'var(--grn)';
+    var b=document.getElementById('b-rain'),c=document.getElementById('c-rain');
+    c.classList.remove('tr','wa');
+    if(rain>=35){b.className='sbg btr';b.textContent='TRIGGERED';c.classList.add('tr');}
+    else if(rain>=20){b.className='sbg bwn';b.textContent='Elevated';c.classList.add('wa');}
+    else{b.className='sbg bsf';b.textContent='Safe';}
+  }
+  if(!TR['heat']){
+    var t=LW.temp;
+    document.getElementById('v-heat').innerHTML=t+' <span class="su">°C</span>';
+    document.getElementById('sb-heat').style.width=Math.min(100,(t/50)*100)+'%';
+    document.getElementById('sb-heat').style.background=t>=38?'var(--amb)':'var(--grn)';
+    var b=document.getElementById('b-heat'),c=document.getElementById('c-heat');
+    c.classList.remove('tr','wa');
+    if(t>=42){b.className='sbg btr';b.textContent='TRIGGERED';c.classList.add('tr');}
+    else if(t>=35){b.className='sbg bwn';b.textContent='Warm';c.classList.add('wa');}
+    else{b.className='sbg bsf';b.textContent='Safe';}
+  }
+  if(!TR['aqi']){
+    var aqi=LA?LA.aqi:null,c=document.getElementById('c-aqi');c.classList.remove('tr','wa');
+    if(aqi!=null){
+      document.getElementById('v-aqi').innerHTML=aqi+' <span class="su">AQI</span>';
+      document.getElementById('sb-aqi').style.width=Math.min(100,(aqi/500)*100)+'%';
+      document.getElementById('sb-aqi').style.background=aqi>=200?'var(--red)':aqi>=100?'var(--amb)':'var(--grn)';
+      var b=document.getElementById('b-aqi');
+      if(aqi>=300){b.className='sbg btr';b.textContent='Hazardous';c.classList.add('tr');}
+      else if(aqi>=150){b.className='sbg bwn';b.textContent='Unhealthy';c.classList.add('wa');}
+      else{b.className='sbg bsf';b.textContent=(LA&&LA.category)||'Safe';}
+    }else{
+      document.getElementById('v-aqi').innerHTML='N/A <span class="su">AQI</span>';
+      document.getElementById('b-aqi').className='sbg bld';
+      document.getElementById('b-aqi').textContent=(LA&&LA.category)||'No sensor';
+    }
+  }
+}
+
+var DISR={
+  rain:{val:'48 <span class="su">mm/hr</span>',total:942770,desc:'Heavy rainfall 48mm/hr — Zone BLR-04. 1,247 enrolled riders identified. Processing 60% daily earnings payout.',payouts:[{r:'Rajan Kumar · BLR-04',a:'₹820'},{r:'Priya S. · BLR-04',a:'₹750'},{r:'Mohammed R. · BLR-04',a:'₹1,200'},{r:'+ 1,244 more riders...',a:'₹9,40,000'}],log:'TRIGGERED: Heavy Rain 48mm/hr. Zone BLR-04. 1,247 riders. Total: Rs. 9,42,770.'},
+  aqi:{val:'318 <span class="su">AQI</span>',total:623500,desc:'AQI 318 Hazardous — CPCB confirmed. 1,247 riders eligible. Processing 50% daily earnings payout.',payouts:[{r:'Rajan Kumar · BLR-04',a:'₹500'},{r:'Divya M. · BLR-04',a:'₹500'},{r:'Arjun K. · BLR-04',a:'₹500'},{r:'+ 1,244 more riders...',a:'₹6,22,000'}],log:'TRIGGERED: Hazardous AQI 318. Zone BLR-04. 1,247 riders. Total: Rs. 6,23,500.'},
+  heat:{val:'44 <span class="su">°C</span>',total:374100,desc:'44°C sustained 4+ hours. 1,247 riders eligible for 40% daily earnings payout.',payouts:[{r:'Rajan Kumar · BLR-04',a:'₹300'},{r:'Sanjay T. · BLR-04',a:'₹280'},{r:'Fatima B. · BLR-04',a:'₹320'},{r:'+ 1,244 more riders...',a:'₹3,73,200'}],log:'TRIGGERED: Extreme Heat 44°C. Zone BLR-04. 1,247 riders. Total: Rs. 3,74,100.'},
+  curfew:{val:'CURFEW <span class="su" style="font-size:14px">active</span>',total:937170,desc:'Zone curfew confirmed — BLR-04. 1,247 riders eligible for 100% daily earnings payout.',payouts:[{r:'Rajan Kumar · BLR-04',a:'₹750'},{r:'Meera V. · BLR-04',a:'₹620'},{r:'Rahul D. · BLR-04',a:'₹800'},{r:'+ 1,244 more riders...',a:'₹9,35,000'}],log:'TRIGGERED: Zone Curfew BLR-04. 100% daily earnings. 1,247 riders. Total: Rs. 9,37,170.'}
+};
+
+function trig(type){
+  if(TR[type])return;TR[type]=true;
+  var d=DISR[type];
+  document.getElementById('c-'+type).className='sn tr';
+  document.getElementById('b-'+type).className='sbg btr';document.getElementById('b-'+type).textContent='Triggered';
+  document.getElementById('v-'+type).innerHTML=d.val;
+  document.getElementById('sb-'+type).style.width='100%';document.getElementById('sb-'+type).style.background='var(--red)';
+  var btn=document.getElementById('btn-'+type);btn.className='tb2 on';btn.textContent='Triggered';btn.disabled=true;
+  document.getElementById('pay-sub').textContent=d.desc;
+  document.getElementById('pay-alert').classList.add('on');
+  countUp(d.total,2000);
+  var list=document.getElementById('pay-list');list.innerHTML='';
+  d.payouts.forEach((p,i)=>setTimeout(()=>{var row=document.createElement('div');row.className='pw';row.innerHTML='<span class="prd">'+p.r+'</span><span class="pam">'+p.a+'</span>';list.appendChild(row);},i*350));
+  log('r',d.log);
+}
+
+function countUp(to,ms){
+  var el=document.getElementById('pay-ctr'),s=performance.now();
+  (function f(now){var p=Math.min((now-s)/ms,1),v=Math.floor(to*(1-Math.pow(1-p,3)));el.textContent='₹'+v.toLocaleString('en-IN');if(p<1)requestAnimationFrame(f);})(s);
+}
+
+function resetAll(){
+  TR={};
+  var lb={rain:'Simulate Heavy Rain',aqi:'Simulate Hazardous AQI',heat:'Simulate Extreme Heat',curfew:'Simulate Zone Curfew'};
+  ['rain','aqi','heat','curfew'].forEach(t=>{document.getElementById('c-'+t).className='sn';var b=document.getElementById('btn-'+t);b.className='tb2';b.disabled=false;b.textContent=lb[t];});
+  document.getElementById('b-curfew').className='sbg bsf';document.getElementById('b-curfew').textContent='Safe';
+  document.getElementById('v-curfew').innerHTML='None <span class="su" style="font-size:16px">active</span>';
+  document.getElementById('sb-curfew').style.width='0%';
+  document.getElementById('pay-alert').classList.remove('on');
+  document.getElementById('pay-list').innerHTML='';
+  log('g','All sensors reset. Refetching live data.');
+  fetchLive();
+}
+
+function log(color,text){
+  var el=document.getElementById('evlog'),item=document.createElement('div');
+  item.className='ev';
+  item.innerHTML='<div class="ed '+color+'"></div><div class="et"><strong>'+new Date().toLocaleTimeString('en-IN')+'</strong> — '+text+'</div><div class="etm">Now</div>';
+  el.insertBefore(item,el.firstChild);
+  while(el.children.length>20)el.removeChild(el.lastChild);
+}
+
+window.addEventListener('load',()=>{if(document.getElementById('s-monitor').classList.contains('active'))fetchLive();});
+</script>
+</body>
+</html>
