@@ -298,7 +298,7 @@ select option{background:var(--sur2);}
 <!-- ONBOARD -->
 <div id="s-onboard" class="screen">
   <div class="ow">
-    <div class="oh"><h2>Get covered in 3 minutes.</h2><p>OTP is shown on screen for this demo.</p></div>
+    <div class="oh"><h2>Get covered in 3 minutes.</h2><p>OTP will be sent to your mobile number via SMS.</p></div>
     <div class="pg"><div class="pd on" id="pd1"></div><div class="pd" id="pd2"></div><div class="pd" id="pd3"></div><div class="pd" id="pd4"></div><div class="pd" id="pd5"></div></div>
     <!-- Step 1 -->
     <div class="fs active" id="fs1">
@@ -315,7 +315,7 @@ select option{background:var(--sur2);}
     </div>
     <!-- Step 2 -->
     <div class="fs" id="fs2">
-      <p style="font-size:14px;color:var(--txt-d);margin-bottom:8px">Enter the OTP from the popup for <strong id="otp-ph">your number</strong>.</p>
+      <p style="font-size:14px;color:var(--txt-d);margin-bottom:8px">Enter the OTP sent to <strong id="otp-ph">your number</strong> via SMS.</p>
       <p class="im" style="margin-bottom:28px">OTP valid for 5 minutes.</p>
       <div class="fg">
         <label>OTP</label>
@@ -516,13 +516,12 @@ async function sendOTP(resend){
   document.getElementById('e-ph').classList.remove('on');
   document.getElementById('e-otp').classList.remove('on');
   if(!/^[6-9]\d{9}$/.test(ph)){document.getElementById('e-ph').classList.add('on');return;}
-  var btn=document.getElementById('btn-otp');btn.disabled=true;btn.textContent='Generating...';
+  var btn=document.getElementById('btn-otp');btn.disabled=true;btn.textContent='Sending...';
   try{
     var r=await fetch('/api/send-otp',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({phone:ph})});
     var d=await r.json();
     if(d.success){
       VP=ph;document.getElementById('otp-ph').textContent='+91 '+ph;
-      alert('GigShield — Demo OTP\n\nYour verification code is:\n\n'+d.otp+'\n\nEnter this on the next screen.');
       if(!resend)step(2);
     }else{document.getElementById('e-otp').textContent=d.error||'Failed. Try again.';document.getElementById('e-otp').classList.add('on');}
   }catch(e){document.getElementById('e-otp').textContent='Network error. Try again.';document.getElementById('e-otp').classList.add('on');}
