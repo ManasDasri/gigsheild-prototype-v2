@@ -415,38 +415,38 @@ select option{background:var(--sur2);}
 <div id="s-dashboard" class="screen">
   <div class="dw">
     <div class="dh">
-      <div><h2>Good morning, <span id="d-nm">Rajan</span>.</h2><p>Bengaluru — Indiranagar Zone · Standard Plan</p></div>
+      <div><h2>Good morning, <span id="d-nm">—</span>.</h2><p id="d-sub">— · Coverage Active</p></div>
       <div class="pil">Coverage Active</div>
     </div>
     <div class="g3">
-      <div class="cd"><div class="cl">Total Protected This Month</div><div class="cv g">&#8377;4,820</div><div class="cs">3 disruption events paid out</div></div>
-      <div class="cd"><div class="cl">Weekly Coverage Remaining</div><div class="cv">&#8377;1,680</div><div class="cs">of &#8377;2,500 cap this week</div></div>
-      <div class="cd"><div class="cl">Next Premium Deduction</div><div class="cv a">Mon</div><div class="cs">Rs. 250 — UPI autopay</div></div>
+      <div class="cd"><div class="cl">Weekly Coverage Cap</div><div class="cv g" id="d-cap">—</div><div class="cs" id="d-plan-label">—</div></div>
+      <div class="cd"><div class="cl">Weekly Premium</div><div class="cv a" id="d-premium">—</div><div class="cs">Auto-deducted every Monday</div></div>
+      <div class="cd"><div class="cl">Coverage City</div><div class="cv" id="d-city">—</div><div class="cs" id="d-platform">—</div></div>
     </div>
     <div class="g2">
       <div class="cd">
         <div class="ct">Pool Health</div>
         <div style="margin-bottom:18px"><div class="pbr"><span class="pbn">Accumulation Pool (70%)</span><span class="pbv" style="color:var(--grn)">82%</span></div><div class="pbb"><div class="pbba" style="width:82%;background:var(--grn)"></div></div></div>
         <div><div class="pbr"><span class="pbn">Distribution Pool (30%)</span><span class="pbv" style="color:var(--amb)">41%</span></div><div class="pbb"><div class="pbba" style="width:41%;background:var(--amb)"></div></div></div>
-        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--bor)"><div style="font-size:12px;color:var(--txt-m)">Quarterly cap utilization</div><div style="font-size:13px;color:var(--txt-d);margin-top:6px">Bengaluru: 24% of Rs. 6.5 crore cap used</div></div>
+        <div style="margin-top:20px;padding-top:16px;border-top:1px solid var(--bor)"><div style="font-size:12px;color:var(--txt-m)">Quarterly cap utilization</div><div style="font-size:13px;color:var(--txt-d);margin-top:6px" id="d-pool-city">—</div></div>
       </div>
       <div class="cd">
         <div class="ct">Your Zone</div>
-        <div class="zi"><div class="zd">&#128205;</div><div><div class="zn">Indiranagar</div><div class="zs">Bengaluru East · Zone BLR-04</div></div></div>
+        <div class="zi"><div class="zd">&#128205;</div><div><div class="zn" id="d-zone">—</div><div class="zs" id="d-zone-sub">—</div></div></div>
         <div class="zg">
-          <div class="zsi"><div class="zsil">Risk Level</div><div class="zsiv" style="color:var(--amb)">Moderate</div></div>
+          <div class="zsi"><div class="zsil">Risk Level</div><div class="zsiv" id="d-risk" style="color:var(--amb)">—</div></div>
           <div class="zsi"><div class="zsil">Enrolled Riders</div><div class="zsiv">1,247</div></div>
           <div class="zsi"><div class="zsil">Events This Month</div><div class="zsiv">3</div></div>
-          <div class="zsi"><div class="zsil">Avg Payout</div><div class="zsiv">&#8377;1,607</div></div>
+          <div class="zsi"><div class="zsil">Avg Payout</div><div class="zsiv" id="d-avg-payout">—</div></div>
         </div>
       </div>
     </div>
     <div class="cd">
       <div class="ct">Recent Payouts</div>
       <div class="txl">
-        <div class="txi"><div class="txil"><div class="txic po">&#127783;</div><div><div class="txt">Heavy Rain — Indiranagar</div><div class="txdt">Mar 14, 2026 · 14:32 · Auto-triggered</div></div></div><div class="txa cr">+&#8377;820</div></div>
-        <div class="txi"><div class="txil"><div class="txic po">&#127754;</div><div><div class="txt">Flood Alert — Zone BLR-04</div><div class="txdt">Mar 07, 2026 · 09:15 · Auto-triggered</div></div></div><div class="txa cr">+&#8377;2,500</div></div>
-        <div class="txi"><div class="txil"><div class="txic po">&#9729;&#65039;</div><div><div class="txt">High Pollution — AQI 318</div><div class="txdt">Feb 28, 2026 · 11:48 · Auto-triggered</div></div></div><div class="txa cr">+&#8377;1,500</div></div>
+        <div class="txi"><div class="txil"><div class="txic po">&#127783;</div><div><div class="txt">Heavy Rain — Indiranagar</div><div class="txdt">Mar 14, 2026 · 14:32 · Auto-triggered</div></div></div><div class="txa cr" id="d-p1">—</div></div>
+        <div class="txi"><div class="txil"><div class="txic po">&#127754;</div><div><div class="txt">Flood Alert — Zone BLR-04</div><div class="txdt">Mar 07, 2026 · 09:15 · Auto-triggered</div></div></div><div class="txa cr" id="d-p2">—</div></div>
+        <div class="txi"><div class="txil"><div class="txic po">&#9729;&#65039;</div><div><div class="txt">High Pollution — AQI 318</div><div class="txdt">Feb 28, 2026 · 11:48 · Auto-triggered</div></div></div><div class="txa cr" id="d-p3">—</div></div>
       </div>
     </div>
   </div>
@@ -533,16 +533,69 @@ select option{background:var(--sur2);}
 <script>
 var TD={name:'Standard',premium:'250',coverage:'2,500'},VP='',LW=null,LA=null,TR={};
 
-function go(s){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById('s-'+s).classList.add('active');window.scrollTo(0,0);if(s==='monitor')fetchLive();}
+// City zone data
+var ZONES={Bengaluru:{zone:'Indiranagar',sub:'Bengaluru East · Zone BLR-04',risk:'Moderate',riskColor:'var(--amb)',pool:'Bengaluru: 24% of Rs. 6.5 crore cap used'},Chennai:{zone:'T. Nagar',sub:'Chennai Central · Zone CHN-02',risk:'High',riskColor:'var(--red)',pool:'Chennai: 18% of Rs. 4.2 crore cap used'},Mumbai:{zone:'Andheri East',sub:'Mumbai Suburban · Zone MUM-07',risk:'Very High',riskColor:'var(--red)',pool:'Mumbai: 31% of Rs. 8.1 crore cap used'},Hyderabad:{zone:'Banjara Hills',sub:'Hyderabad West · Zone HYD-03',risk:'Moderate',riskColor:'var(--amb)',pool:'Hyderabad: 12% of Rs. 3.8 crore cap used'},Delhi:{zone:'Connaught Place',sub:'Delhi Central · Zone DEL-01',risk:'High',riskColor:'var(--red)',pool:'Delhi: 27% of Rs. 7.0 crore cap used'},Pune:{zone:'Koregaon Park',sub:'Pune East · Zone PUN-04',risk:'Low',riskColor:'var(--grn)',pool:'Pune: 9% of Rs. 2.5 crore cap used'}};
+
+function go(s){document.querySelectorAll('.screen').forEach(x=>x.classList.remove('active'));document.getElementById('s-'+s).classList.add('active');window.scrollTo(0,0);if(s==='monitor')fetchLive();if(s==='dashboard')loadDashboard();}
+
+function loadDashboard(){
+  var phone=localStorage.getItem('gs_phone');
+  if(phone){
+    fetch('/api/get-user?phone='+phone)
+      .then(r=>r.json())
+      .then(d=>{ if(d.success)renderDashboard(d.user); else renderDashboard(JSON.parse(localStorage.getItem('gs_user')||'null')); })
+      .catch(()=>renderDashboard(JSON.parse(localStorage.getItem('gs_user')||'null')));
+  } else {
+    renderDashboard(JSON.parse(localStorage.getItem('gs_user')||'null'));
+  }
+}
+
+function renderDashboard(u){
+  if(!u)return;
+  var z=ZONES[u.city]||ZONES['Bengaluru'];
+  var earn=parseInt(u.earn)||700;
+  var cap=parseInt((u.coverage||'2500').replace(/,/g,''));
+  var p1=Math.round(earn*0.6);
+  var p2=Math.min(Math.round(earn*1.0),cap);
+  var p3=Math.round(earn*0.5);
+  var avgPayout=Math.round((p1+p2+p3)/3);
+  var hr=new Date().getHours();
+  var greet=hr<12?'Good morning':hr<17?'Good afternoon':'Good evening';
+  document.querySelector('#s-dashboard .dh h2').innerHTML=greet+', <span>'+u.name.split(' ')[0]+'</span>.';
+  document.getElementById('d-sub').textContent=u.city+' · '+u.plan+' Plan';
+  document.getElementById('d-cap').textContent='₹'+(u.coverage||'2,500');
+  document.getElementById('d-plan-label').textContent=u.plan+' Plan · Weekly cap';
+  document.getElementById('d-premium').textContent='₹'+(u.premium||'250');
+  document.getElementById('d-city').textContent=u.city;
+  document.getElementById('d-platform').textContent=(u.platform||'—')+' · Active';
+  document.getElementById('d-pool-city').textContent=z.pool;
+  document.getElementById('d-zone').textContent=z.zone;
+  document.getElementById('d-zone-sub').textContent=z.sub;
+  document.getElementById('d-risk').textContent=z.risk;
+  document.getElementById('d-risk').style.color=z.riskColor;
+  document.getElementById('d-avg-payout').textContent='₹'+avgPayout.toLocaleString('en-IN');
+  document.getElementById('d-p1').textContent='+₹'+p1.toLocaleString('en-IN');
+  document.getElementById('d-p2').textContent='+₹'+p2.toLocaleString('en-IN');
+  document.getElementById('d-p3').textContent='+₹'+p3.toLocaleString('en-IN');
+}
 
 function step(n){
   if(n===5){
-    document.getElementById('s-nm').textContent=document.getElementById('r-name').value||'Rider';
+    var name=document.getElementById('r-name').value||'Rider';
+    var city=document.getElementById('r-city').value||'Bengaluru';
+    var platform=document.getElementById('r-plat').value||'Zomato';
+    var earn=document.getElementById('r-earn').value||'700';
+    var userData={phone:VP,name,city,platform,earn,plan:TD.name,premium:TD.premium,coverage:TD.coverage};
+    // Save to localStorage as fallback
+    localStorage.setItem('gs_user',JSON.stringify(userData));
+    localStorage.setItem('gs_phone',VP);
+    // Save to Redis
+    fetch('/api/save-user',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(userData)}).catch(()=>{});
+    document.getElementById('s-nm').textContent=name;
     document.getElementById('s-ti').textContent=TD.name;
     document.getElementById('s-pr').textContent='Rs. '+TD.premium;
     document.getElementById('s-cp').textContent='Rs. '+TD.coverage;
-    document.getElementById('s-ct').textContent=document.getElementById('r-city').value||'—';
-    document.getElementById('d-nm').textContent=(document.getElementById('r-name').value||'Rider').split(' ')[0];
+    document.getElementById('s-ct').textContent=city;
   }
   document.querySelectorAll('.fs').forEach(x=>x.classList.remove('active'));
   document.getElementById('fs'+n).classList.add('active');
