@@ -207,18 +207,38 @@ select option{background:var(--sur2);}
 .tb2:disabled{opacity:.4;cursor:not-allowed;}
 .rsb{background:var(--grn-m);border:1px solid rgba(0,232,122,.3);color:var(--grn);padding:10px 20px;border-radius:8px;font-family:var(--fb);font-weight:600;font-size:13px;cursor:pointer;width:100%;margin-top:8px;}
 .rsb:hover{opacity:.8;}
-.pa{background:linear-gradient(135deg,rgba(0,232,122,.08),rgba(0,232,122,.03));border:1px solid rgba(0,232,122,.3);border-radius:12px;padding:24px;margin-top:16px;display:none;}
+.pa{background:var(--sur);border:1px solid rgba(0,232,122,.3);border-radius:16px;margin-top:16px;display:none;overflow:hidden;}
 .pa.on{display:block;animation:sli .4s ease;}
 @keyframes sli{from{opacity:0;transform:translateY(10px)}to{opacity:1;transform:translateY(0)}}
-.pat{font-family:var(--fh);font-size:18px;font-weight:800;color:var(--grn);margin-bottom:6px;}
-.pcw{display:flex;align-items:baseline;gap:6px;margin:16px 0;}
-.pcl{font-size:13px;color:var(--txt-d);}
-.pc{font-family:var(--fh);font-size:40px;font-weight:800;color:var(--grn);}
-.psu{font-size:13px;color:var(--txt-d);margin-bottom:16px;}
-.pl{display:flex;flex-direction:column;gap:8px;}
-.pw{display:flex;justify-content:space-between;background:var(--sur);border-radius:8px;padding:10px 14px;font-size:13px;animation:fu .3s ease;}
-.prd{color:var(--txt-d);}
-.pam{font-family:var(--fh);font-weight:700;color:var(--grn);}
+.ph{background:linear-gradient(135deg,rgba(0,232,122,.12),rgba(0,232,122,.04));padding:20px 24px;border-bottom:1px solid var(--bor);}
+.phrow{display:flex;justify-content:space-between;align-items:flex-start;flex-wrap:wrap;gap:12px;}
+.pat{font-family:var(--fh);font-size:16px;font-weight:800;color:var(--grn);margin-bottom:4px;}
+.psu{font-size:12px;color:var(--txt-d);}
+.pcw{display:flex;align-items:baseline;gap:4px;}
+.pcl{font-size:11px;color:var(--txt-d);margin-bottom:2px;}
+.pc{font-family:var(--fh);font-size:36px;font-weight:800;color:var(--grn);line-height:1;}
+.pstages{display:flex;gap:6px;margin-top:16px;align-items:center;}
+.pstg{font-size:11px;font-weight:700;padding:4px 12px;border-radius:100px;background:var(--bor);color:var(--txt-m);transition:all .4s;}
+.pstg.done{background:var(--grn-m);color:var(--grn);}
+.pstg.active{background:rgba(245,166,35,.15);color:var(--amb);animation:pulse 1s infinite;}
+.psdiv{font-size:10px;color:var(--txt-m);}
+.pl{display:flex;flex-direction:column;gap:0;max-height:320px;overflow-y:auto;padding:8px 0;}
+.pw{display:flex;justify-content:space-between;align-items:center;padding:12px 24px;border-bottom:1px solid var(--bor);animation:fu .35s ease;gap:12px;}
+.pw:last-child{border-bottom:none;}
+.pwl{display:flex;flex-direction:column;gap:3px;flex:1;min-width:0;}
+.prd{font-size:13px;font-weight:600;color:var(--txt);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
+.pupi{font-size:11px;color:var(--txt-m);font-family:monospace;}
+.pref{font-size:10px;color:var(--txt-m);font-family:monospace;margin-top:1px;}
+.pwr{display:flex;flex-direction:column;align-items:flex-end;gap:4px;flex-shrink:0;}
+.pam{font-family:var(--fh);font-size:15px;font-weight:800;color:var(--grn);}
+.pst{font-size:10px;font-weight:700;padding:3px 8px;border-radius:100px;transition:all .5s;}
+.pst.queued{background:var(--bor);color:var(--txt-m);}
+.pst.processing{background:rgba(245,166,35,.15);color:var(--amb);}
+.pst.paid{background:var(--grn-m);color:var(--grn);}
+.pfoot{padding:16px 24px;border-top:1px solid var(--bor);display:flex;justify-content:space-between;align-items:center;background:rgba(0,232,122,.03);}
+.pfstat{font-size:12px;color:var(--txt-d);}
+.pfstat strong{color:var(--grn);}
+.pftm{font-size:11px;color:var(--txt-m);font-family:monospace;}
 .el{background:var(--sur);border:1px solid var(--bor);border-radius:12px;padding:24px;margin-top:16px;}
 .elt{font-family:var(--fh);font-size:16px;font-weight:700;margin-bottom:20px;display:flex;justify-content:space-between;align-items:center;}
 .lb{font-size:11px;font-weight:700;color:var(--grn);background:var(--grn-m);padding:4px 10px;border-radius:100px;display:flex;align-items:center;gap:6px;}
@@ -449,10 +469,30 @@ select option{background:var(--sur2);}
     </div>
     <button class="rsb" onclick="resetAll()">Reset All Sensors to Live Data</button>
     <div class="pa" id="pay-alert">
-      <div class="pat">Payout Triggered &#8212; Processing</div>
-      <div class="pcw"><div class="pcl">Total transferring to riders:</div><div class="pc" id="pay-ctr">&#8377;0</div></div>
-      <div class="psu" id="pay-sub">AI engine identified affected riders. Initiating UPI transfers.</div>
+      <div class="ph">
+        <div class="phrow">
+          <div>
+            <div class="pat" id="pay-title">⚡ Disruption Verified — Initiating Payouts</div>
+            <div class="psu" id="pay-sub">AI engine identifying affected riders in zone BLR-04.</div>
+          </div>
+          <div>
+            <div class="pcl">Total Transferring</div>
+            <div class="pcw"><div class="pc" id="pay-ctr">₹0</div></div>
+          </div>
+        </div>
+        <div class="pstages">
+          <div class="pstg active" id="ps1">① Verifying</div>
+          <div class="psdiv">›</div>
+          <div class="pstg" id="ps2">② Processing</div>
+          <div class="psdiv">›</div>
+          <div class="pstg" id="ps3">③ Complete</div>
+        </div>
+      </div>
       <div class="pl" id="pay-list"></div>
+      <div class="pfoot" id="pay-foot" style="display:none">
+        <div class="pfstat" id="pay-stat">—</div>
+        <div class="pftm" id="pay-time">—</div>
+      </div>
     </div>
     <div class="el">
       <div class="elt">Event Log <div class="lb">Live</div></div>
@@ -651,6 +691,9 @@ var DISR={
   curfew:{val:'CURFEW <span class="su" style="font-size:14px">active</span>',total:937170,desc:'Zone curfew confirmed — BLR-04. 1,247 riders eligible for 100% daily earnings payout.',payouts:[{r:'Rajan Kumar · BLR-04',a:'₹750'},{r:'Meera V. · BLR-04',a:'₹620'},{r:'Rahul D. · BLR-04',a:'₹800'},{r:'+ 1,244 more riders...',a:'₹9,35,000'}],log:'TRIGGERED: Zone Curfew BLR-04. 100% daily earnings. 1,247 riders. Total: Rs. 9,37,170.'}
 };
 
+function upiRef(){var d=new Date(),pad=n=>String(n).padStart(2,'0');return 'UPI/'+d.getFullYear().toString().slice(2)+pad(d.getMonth()+1)+pad(d.getDate())+pad(d.getHours())+pad(d.getMinutes())+'/GIGSHLD/'+Math.floor(100000+Math.random()*900000);}
+function upiId(name){return name.toLowerCase().replace(/[^a-z]/g,'').slice(0,8)+Math.floor(10+Math.random()*90)+'@upi';}
+
 function trig(type){
   if(TR[type])return;TR[type]=true;
   var d=DISR[type];
@@ -659,12 +702,55 @@ function trig(type){
   document.getElementById('v-'+type).innerHTML=d.val;
   document.getElementById('sb-'+type).style.width='100%';document.getElementById('sb-'+type).style.background='var(--red)';
   var btn=document.getElementById('btn-'+type);btn.className='tb2 on';btn.textContent='Triggered';btn.disabled=true;
+  // Reset payout panel
+  document.getElementById('pay-title').textContent='⚡ Disruption Verified — Initiating Payouts';
   document.getElementById('pay-sub').textContent=d.desc;
+  document.getElementById('pay-ctr').textContent='₹0';
+  document.getElementById('pay-foot').style.display='none';
+  document.getElementById('pay-list').innerHTML='';
+  ['ps1','ps2','ps3'].forEach((id,i)=>{var el=document.getElementById(id);el.className='pstg'+(i===0?' active':'');});
   document.getElementById('pay-alert').classList.add('on');
-  countUp(d.total,2000);
-  var list=document.getElementById('pay-list');list.innerHTML='';
-  d.payouts.forEach((p,i)=>setTimeout(()=>{var row=document.createElement('div');row.className='pw';row.innerHTML='<span class="prd">'+p.r+'</span><span class="pam">'+p.a+'</span>';list.appendChild(row);},i*350));
   log('r',d.log);
+
+  // Stage 1: Verifying (0-1.2s)
+  setTimeout(()=>{
+    document.getElementById('ps1').className='pstg done';
+    document.getElementById('ps2').className='pstg active';
+    log('a','Zone BLR-04 verified. '+d.payouts.length+' rider records matched. Queueing UPI transfers.');
+
+    // Stage 2: Add rider rows as Queued
+    var list=document.getElementById('pay-list');
+    var rowEls=[];
+    d.payouts.forEach((p,i)=>{
+      setTimeout(()=>{
+        var ref=upiRef();
+        var upi=upiId(p.r.split('·')[0].trim());
+        var row=document.createElement('div');
+        row.className='pw';
+        row.innerHTML=`<div class="pwl"><div class="prd">${p.r}</div><div class="pupi">${upi}</div><div class="pref">Ref: ${ref}</div></div><div class="pwr"><div class="pam">${p.a}</div><div class="pst queued" id="pst-${i}">Queued</div></div>`;
+        list.appendChild(row);
+        rowEls.push({el:document.getElementById('pst-'+i)});
+        // Flip to Processing
+        setTimeout(()=>{document.getElementById('pst-'+i).className='pst processing';document.getElementById('pst-'+i).textContent='Processing';},400);
+        // Flip to Paid
+        setTimeout(()=>{document.getElementById('pst-'+i).className='pst paid';document.getElementById('pst-'+i).textContent='✓ Paid';},1200);
+      },i*300);
+    });
+
+    // Stage 3: Complete + count up
+    var completeAt=d.payouts.length*300+1400;
+    setTimeout(()=>{
+      document.getElementById('ps2').className='pstg done';
+      document.getElementById('ps3').className='pstg done';
+      document.getElementById('pay-title').textContent='✓ All Payouts Complete';
+      countUp(d.total,1800);
+      document.getElementById('pay-foot').style.display='flex';
+      document.getElementById('pay-stat').innerHTML='<strong>'+d.payouts.length+' riders</strong> paid · Zone BLR-04 · '+type.charAt(0).toUpperCase()+type.slice(1)+' trigger';
+      document.getElementById('pay-time').textContent=new Date().toLocaleTimeString('en-IN')+' IST';
+      log('g','All payouts complete. ₹'+d.total.toLocaleString('en-IN')+' transferred to '+d.payouts.length+' riders via UPI.');
+    },completeAt);
+
+  },1200);
 }
 
 function countUp(to,ms){
@@ -681,6 +767,9 @@ function resetAll(){
   document.getElementById('sb-curfew').style.width='0%';
   document.getElementById('pay-alert').classList.remove('on');
   document.getElementById('pay-list').innerHTML='';
+  document.getElementById('pay-ctr').textContent='₹0';
+  document.getElementById('pay-foot').style.display='none';
+  ['ps1','ps2','ps3'].forEach((id,i)=>{document.getElementById(id).className='pstg'+(i===0?' active':'');});
   log('g','All sensors reset. Refetching live data.');
   fetchLive();
 }
