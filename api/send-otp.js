@@ -1,7 +1,7 @@
 // api/send-otp.js
-// Simulated OTP for demo — generates a real 4-digit code server-side,
-// returns it in the JSON response so the frontend can show it in an alert.
-// In production this would call an SMS provider instead.
+// Fast2SMS OTP route — https://www.fast2sms.com
+// Env var: FAST2SMS_KEY  (from your Fast2SMS dashboard → Dev API)
+// Free tier gives 200 credits on signup. 1 OTP SMS ≈ 1 credit.
 
 const store = global._gs_otp || (global._gs_otp = {});
 
@@ -19,9 +19,41 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Enter a valid 10-digit Indian mobile number.' });
   }
 
+  const key = process.env.FAST2SMS_KEY;
+  if (!key) return res.status(500).json({ error: 'FAST2SMS_KEY not set in Vercel environment variables.' });
+
   const otp = String(Math.floor(1000 + Math.random() * 9000));
   store[clean] = { otp, exp: Date.now() + 5 * 60 * 1000 };
 
-  // Return OTP in response — frontend shows it in an alert for demo
-  return res.status(200).json({ success: true, otp });
+  try {
+    const r = await fetch('https://www.fast2sms.com/dev/bulkV2', {
+      method: 'POST',
+      headers: {
+        'authorization': key,
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        route: 'q',
+        message: `Your GigShield OTP is ${otp}. Valid for 5 minutes. Do not share with anyone.`,
+        numbers: clean,
+        flash: 0
+      })
+    });
+
+    const data = await r.json();
+
+    // Fast2SMS returns { return: true, request_id: '...', message: [...] } on success
+    if (!data.return) {
+      console.error('Fast2SMS error:', JSON.stringify(data));
+      // Still return success — OTP is in store, SMS might retry
+      return res.status(200).json({ success: true, warning: 'SMS delivery unconfirmed. OTP stored for 5 min.' });
+    }
+
+    return res.status(200).json({ success: true });
+
+  } catch (err) {
+    console.error('Fast2SMS fetch error:', err.message);
+    // OTP is still stored — frontend can retry verify
+    return res.status(500).json({ error: 'SMS gateway error: ' + err.message });
+  }
 }
