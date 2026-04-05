@@ -1,6 +1,6 @@
 // api/send-otp.js
-// Fast2SMS Quick SMS + Upstash Redis for cross-function OTP persistence
-// Env vars: FAST2SMS_KEY, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN
+// 2Factor.in OTP API — fast DND-bypass OTP for India
+// Env vars: TWOFACTOR_KEY, UPSTASH_REDIS_REST_URL, UPSTASH_REDIS_REST_TOKEN
 
 async function redisSet(key, value, ttlSeconds) {
   const url = `${process.env.UPSTASH_REDIS_REST_URL}/set/${key}/${value}/ex/${ttlSeconds}`;
@@ -24,35 +24,24 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'Enter a valid 10-digit Indian mobile number.' });
   }
 
-  if (!process.env.FAST2SMS_KEY) return res.status(500).json({ error: 'FAST2SMS_KEY not set.' });
+  const key = process.env.TWOFACTOR_KEY;
+  if (!key) return res.status(500).json({ error: 'TWOFACTOR_KEY not set.' });
   if (!process.env.UPSTASH_REDIS_REST_URL) return res.status(500).json({ error: 'UPSTASH_REDIS_REST_URL not set.' });
-  if (!process.env.UPSTASH_REDIS_REST_TOKEN) return res.status(500).json({ error: 'UPSTASH_REDIS_REST_TOKEN not set.' });
 
   const otp = String(Math.floor(1000 + Math.random() * 9000));
 
-  // Store OTP in Redis with 5 min TTL
+  // Store in Redis with 5 min TTL
   await redisSet(`otp:${clean}`, otp, 300);
 
   try {
-    const r = await fetch('https://www.fast2sms.com/dev/bulkV2', {
-      method: 'POST',
-      headers: {
-        'authorization': process.env.FAST2SMS_KEY,
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify({
-        route: 'q',
-        message: `Your GigShield OTP is ${otp}. Valid for 5 minutes. Do not share with anyone.`,
-        numbers: clean,
-        flash: 0
-      })
-    });
-
+    // 2Factor API: GET /API/V1/{apikey}/SMS/{phone}/{otp}/{template_name}
+    const url = `https://2factor.in/API/V1/${key}/SMS/${clean}/${otp}/Gigshield`;
+    const r = await fetch(url);
     const data = await r.json();
 
-    if (!data.return) {
-      console.error('Fast2SMS error:', JSON.stringify(data));
-      return res.status(500).json({ error: 'SMS delivery failed: ' + (data.message?.[0] || 'Unknown error') });
+    if (data.Status !== 'Success') {
+      console.error('2Factor error:', JSON.stringify(data));
+      return res.status(500).json({ error: 'SMS delivery failed: ' + (data.Details || 'Unknown error') });
     }
 
     return res.status(200).json({ success: true });
