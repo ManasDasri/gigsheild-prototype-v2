@@ -1,34 +1,16 @@
 // api/aqi.js
-// OpenAQ v3 API — completely free, no key needed
-// Fetches latest PM2.5 readings for Indian cities and converts to AQI
+// WAQI (World Air Quality Index) API — free tier, 1000 calls/day
+// Get token at: https://aqicn.org/api/
+// Env var: WAQI_TOKEN
 
-const CITY_SEARCH = {
-  Bengaluru: 'Bengaluru',
-  Chennai:   'Chennai',
-  Mumbai:    'Mumbai',
-  Hyderabad: 'Hyderabad',
-  Delhi:     'Delhi',
-  Pune:      'Pune'
+const CITY_SLUG = {
+  Bengaluru: 'bengaluru',
+  Chennai:   'chennai',
+  Mumbai:    'mumbai',
+  Hyderabad: 'hyderabad',
+  Delhi:     'delhi',
+  Pune:      'pune'
 };
-
-// US EPA PM2.5 breakpoints → AQI
-function pm25ToAQI(pm) {
-  const bp = [
-    [0.0,   12.0,  0,  50],
-    [12.1,  35.4, 51, 100],
-    [35.5,  55.4,101, 150],
-    [55.5, 150.4,151, 200],
-    [150.5,250.4,201, 300],
-    [250.5,350.4,301, 400],
-    [350.5,500.4,401, 500]
-  ];
-  for (const [clo, chi, ilo, ihi] of bp) {
-    if (pm >= clo && pm <= chi) {
-      return Math.round(((ihi - ilo) / (chi - clo)) * (pm - clo) + ilo);
-    }
-  }
-  return 500;
-}
 
 function aqiCategory(aqi) {
   if (aqi <= 50)  return 'Good';
@@ -45,61 +27,49 @@ export default async function handler(req, res) {
   if (req.method === 'OPTIONS') return res.status(200).end();
 
   const { city } = req.query;
-  const cityName = CITY_SEARCH[city];
-  if (!cityName) return res.status(400).json({ error: 'Invalid city' });
+  const slug = CITY_SLUG[city];
+  if (!slug) return res.status(400).json({ error: 'Invalid city. Valid: Bengaluru, Chennai, Mumbai, Hyderabad, Delhi, Pune' });
+
+  const token = process.env.WAQI_TOKEN;
+  if (!token) return res.status(500).json({ error: 'WAQI_TOKEN not set in Vercel environment variables. Get one free at https://aqicn.org/api/' });
 
   try {
-    // OpenAQ v3 — fetch latest PM2.5 readings for city
-    const url = `https://api.openaq.org/v3/locations?city=${encodeURIComponent(cityName)}&country_id=IN&parameters_id=2&limit=5&order_by=lastUpdated&sort_order=desc`;
-    const r = await fetch(url, {
-      headers: { 'Accept': 'application/json', 'X-API-Key': '' }
-    });
+    const url = `https://api.waqi.info/feed/${slug}/?token=${token}`;
+    const r = await fetch(url);
+    if (!r.ok) throw new Error(`WAQI returned HTTP ${r.status}`);
 
-    if (!r.ok) throw new Error(`OpenAQ returned ${r.status}`);
     const data = await r.json();
 
-    if (!data.results || data.results.length === 0) {
-      return res.status(200).json({ city, pm25: null, aqi: null, category: 'No sensor data', updated: new Date().toISOString() });
+    if (data.status !== 'ok') {
+      return res.status(200).json({
+        city, pm25: null, aqi: null,
+        category: 'Sensor unavailable',
+        updated: new Date().toISOString()
+      });
     }
 
-    // Find most recent PM2.5 value across locations
-    let bestPM = null;
-    let bestTime = null;
-    let sourceName = null;
-
-    for (const loc of data.results) {
-      if (!loc.parameters) continue;
-      for (const param of loc.parameters) {
-        if (param.parameter === 'pm25' && param.lastValue != null && param.lastValue > 0) {
-          const t = new Date(param.lastUpdated);
-          if (!bestTime || t > bestTime) {
-            bestPM = param.lastValue;
-            bestTime = t;
-            sourceName = loc.name;
-          }
-        }
-      }
-    }
-
-    if (bestPM === null) {
-      return res.status(200).json({ city, pm25: null, aqi: null, category: 'No recent PM2.5 data', updated: new Date().toISOString() });
-    }
-
-    const pm25 = Math.round(bestPM);
-    const aqi  = pm25ToAQI(pm25);
+    const aqi = data.data.aqi;
+    // Extract PM2.5 from WAQI's iaqi block if available
+    const pm25 = data.data.iaqi?.pm25?.v ?? null;
+    const stationName = data.data.city?.name ?? slug;
+    const stationTime = data.data.time?.s ?? null;
 
     return res.status(200).json({
       city,
-      pm25,
-      aqi,
-      category:    aqiCategory(aqi),
-      source:      sourceName || 'OpenAQ',
-      last_sensor: bestTime ? bestTime.toISOString() : null,
-      updated:     new Date().toISOString()
+      aqi:      typeof aqi === 'number' ? Math.round(aqi) : null,
+      pm25:     pm25 !== null ? Math.round(pm25) : null,
+      category: typeof aqi === 'number' ? aqiCategory(aqi) : 'No data',
+      source:   stationName,
+      last_sensor: stationTime ? new Date(stationTime).toISOString() : null,
+      updated:  new Date().toISOString()
     });
 
   } catch (err) {
     console.error('AQI error:', err.message);
-    return res.status(200).json({ city, pm25: null, aqi: null, category: 'Sensor unavailable', updated: new Date().toISOString() });
+    return res.status(200).json({
+      city, pm25: null, aqi: null,
+      category: 'Sensor unavailable',
+      updated: new Date().toISOString()
+    });
   }
 }
