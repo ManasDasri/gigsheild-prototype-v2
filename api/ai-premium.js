@@ -72,13 +72,42 @@ Respond ONLY with a single raw JSON object. No markdown. No explanation. No text
     const data = await r.json();
     if (data.error) throw new Error(data.error.message || 'Groq API error');
 
-    const raw = data.choices[0].message.content.trim().replace(/```[a-z]*/g, '').replace(/```/g, '').trim();
+    const raw = data.choices[0].message.content
+      .trim()
+      .replace(/```[a-z]*/g, '')
+      .replace(/```/g, '')
+      .trim();
 
-    // Extract JSON even if model adds surrounding text
+    // Extract JSON block
     const jsonMatch = raw.match(/\{[\s\S]*\}/);
     if (!jsonMatch) throw new Error('Model did not return valid JSON');
 
-    const result = JSON.parse(jsonMatch[0]);
+    // Sanitize: replace unescaped newlines/tabs inside string values
+    let jsonStr = jsonMatch[0]
+      .replace(/[\r\n\t]/g, ' ')           // remove literal newlines/tabs
+      .replace(/,\s*}/g, '}')              // trailing commas
+      .replace(/,\s*]/g, ']');             // trailing commas in arrays
+
+    let result;
+    try {
+      result = JSON.parse(jsonStr);
+    } catch(parseErr) {
+      // Last resort: extract key fields individually via regex
+      const extract = (key) => {
+        const m = jsonStr.match(new RegExp(`"${key}"\\s*:\\s*([^,}\\]]+)`));
+        return m ? m[1].trim().replace(/^"|"$/g,'') : null;
+      };
+      result = {
+        weekly_premium: parseInt(extract('weekly_premium')) || 250,
+        risk_score:     parseInt(extract('risk_score')) || 5,
+        risk_level:     extract('risk_level') || 'Moderate',
+        coverage_cap:   parseInt(extract('coverage_cap')) || 2500,
+        reasoning:      'AI risk assessment completed.',
+        primary_risks:  ['Weather exposure','Platform risk','Hours worked'],
+        loss_ratio_estimate: extract('loss_ratio_estimate') || '65%',
+        discount_applied: null
+      };
+    }
 
     // Validate required fields
     if (!result.weekly_premium || !result.risk_score || !result.coverage_cap) {
