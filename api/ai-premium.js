@@ -62,7 +62,7 @@ Respond ONLY with a single raw JSON object. No markdown. No explanation. No text
         'Authorization': `Bearer ${key}`
       },
       body: JSON.stringify({
-        model: 'llama3-70b-8192',
+        model: 'llama-3.3-70b-versatile',
         messages: [{ role: 'user', content: prompt }],
         temperature: 0.1,
         max_tokens: 400
